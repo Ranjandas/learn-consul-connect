@@ -1,0 +1,17 @@
+---
+
+services:
+  consul-server:
+    image: consul
+    volumes:
+      - ./cfg/server/:/etc/consul.d/:z
+    ports:
+      - 8500:8500
+      - 8501:8501
+      - 8600:8600
+
+
+  consul-client:
+    image: consul
+    volumes:
+      - ./cfg/client/:/etc/consul.d/:z
