@@ -1,0 +1,15 @@
+[Unit]
+Description=Consul Service Mesh Envoy Proxy for Service Counting
+After=network.target consul.service
+Requires=consul.service
+ConditionPathExists=/etc/consul.d/counting.hcl
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/consul connect envoy -sidecar-for=counting -- -l debug
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+

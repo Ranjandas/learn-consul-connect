@@ -1,0 +1,13 @@
+[Unit]
+Description="Dashboard Service"
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Environment=PORT=9002
+Environment=COUNTING_SERVICE_URL="http://localhost:5000"
+ExecStart=/usr/local/bin/dashboard
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

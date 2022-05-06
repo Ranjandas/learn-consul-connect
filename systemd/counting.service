@@ -1,0 +1,12 @@
+[Unit]
+Description="Counting Service"
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Environment=PORT=9003
+ExecStart=/usr/local/bin/counting
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
