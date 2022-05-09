@@ -5,25 +5,38 @@ services:
     image: consul
     volumes:
       - ./cfg/server/:/etc/consul.d/:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
     ports:
       - 8500:8500
       - 8501:8501
-      - 8600:8600
+      - 8600:8600/tcp
+      - 8600:8600/udp
 
 
   consul-client:
     image: consul
     volumes:
       - ./cfg/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
 
   counting:
     image: consul
     volumes:
       - ./cfg/client/consul.hcl:/etc/consul.d/consul.hcl:z
-      - ./cfg/services/counting.hcl:/etc/consul.d/counting.hcl:z
+      - ../../services/counting.hcl:/etc/consul.d/counting.hcl:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
 
   dashboard:
     image: consul
     volumes:
       - ./cfg/client/consul.hcl:/etc/consul.d/consul.hcl:z
-      - ./cfg/services/dashboard.hcl:/etc/consul.d/dashboard.hcl:z
+      - ../../services/dashboard.hcl:/etc/consul.d/dashboard.hcl:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
