@@ -1,1 +1,1 @@
-# learn-consul-podman
+# learn-consul-connect
