@@ -14,19 +14,11 @@ services:
       - 8600:8600/tcp
       - 8600:8600/udp
 
-
-  consul-client:
+  # External Service
+  legacy-node:
     image: consul
     volumes:
-      - ./cfg/client/consul.hcl:/etc/consul.d/consul.hcl:z
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    tmpfs:
-      - /run
-
-  counting:
-    image: consul
-    volumes:
-      - ./cfg/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - /dev/null:/etc/consul.d/consul.hcl:z # mounting dev null to make config file empty so that Consul won't run
       - ../../services/counting.hcl:/etc/consul.d/counting.hcl:z
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     tmpfs:
@@ -41,12 +33,11 @@ services:
     tmpfs:
       - /run
 
-  dnsmasq:
-    image: ubuntu
+  terminating:
+    image: consul
     volumes:
       - ./cfg/client/consul.hcl:/etc/consul.d/consul.hcl:z
-      - ../../services/dashboard.hcl:/etc/consul.d/dashboard.hcl:z
+      - /dev/zero:/etc/consul.d/terminating.env
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     tmpfs:
       - /run
-    command: sleep infinity
