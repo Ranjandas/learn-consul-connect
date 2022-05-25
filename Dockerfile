@@ -17,6 +17,7 @@ RUN dnf install -y consul \
 		   tcpdump \
 		   iproute \
 		   bind-utils \
+		   less \
 		   jq && \
     dnf clean all
 
