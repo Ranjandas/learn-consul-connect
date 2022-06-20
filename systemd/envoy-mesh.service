@@ -1,0 +1,16 @@
+[Unit]
+Description=Consul Service Mesh Envoy Proxy for Service Counting
+After=network.target consul.service
+Requires=consul.service
+ConditionPathExists=/etc/consul.d/mesh.env
+
+[Service]
+Type=simple
+#ExecStart=/usr/bin/consul connect envoy -gateway=ingress -register -service ingress-gateway -address '{{ GetInterfaceIP "eth0" }}:8888'
+ExecStart=/usr/bin/consul connect envoy -gateway=mesh -register -expose-servers -service "gateway" -address '{{ GetInterfaceIP "eth0" }}:8443'
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+

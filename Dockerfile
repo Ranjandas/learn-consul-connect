@@ -48,7 +48,8 @@ RUN systemctl enable consul \
 			envoy-counting \
 			envoy-dashboard \
 			envoy-ingress \
-			envoy-terminating
+			envoy-terminating \
+			envoy-mesh
 
 
 # Use systemd as command
