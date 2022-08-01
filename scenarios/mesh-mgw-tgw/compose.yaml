@@ -1,0 +1,123 @@
+---
+# Datacenter DC1
+services:
+  consul-server-dc1:
+    image: consul
+    hostname: consul-server-dc1
+    volumes:
+      - ./cfg/dc1/server/:/etc/consul.d/:z
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
+      - ./certs/dc1/dc1-server-consul-0.pem:/etc/consul.d/cert.pem:z
+      - ./certs/dc1/dc1-server-consul-0-key.pem:/etc/consul.d/key.pem:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+    ports:
+      - 8500:8500
+      - 8501:8501
+      - 8600:8600/tcp
+      - 8600:8600/udp
+
+  counting:
+    image: consul
+    volumes:
+      - ./cfg/dc1/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
+      - ./cfg/dc1/client/tls.hcl:/etc/consul.d/tls.hcl:z
+      - ../../services/counting.hcl:/etc/consul.d/counting.hcl:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+
+  mesh-dc1:
+    image: consul
+    volumes:
+      - ./cfg/dc1/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
+      - ./cfg/dc1/client/tls.hcl:/etc/consul.d/tls.hcl:z
+      - /dev/zero:/etc/consul.d/mesh.env
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+
+  terminating-dc1:
+    image: consul
+    volumes:
+      - ./cfg/dc1/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
+      - ./cfg/dc1/client/tls.hcl:/etc/consul.d/tls.hcl:z
+      - /dev/zero:/etc/consul.d/terminating.env
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+
+  # External Service
+  legacy-node-dc1:
+    image: consul
+    volumes:
+      - /dev/null:/etc/consul.d/consul.hcl:z # mounting dev null to make config file empty so that Consul won't run
+      - ../../services/counting.hcl:/etc/consul.d/counting.hcl:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+
+# Datacenter DC2
+
+  consul-server-dc2:
+    image: consul
+    hostname: consul-server-dc2
+    volumes:
+      - ./cfg/dc2/server/:/etc/consul.d/:z
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
+      - ./certs/dc2/dc2-server-consul-0.pem:/etc/consul.d/cert.pem:z
+      - ./certs/dc2/dc2-server-consul-0-key.pem:/etc/consul.d/key.pem:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+    ports:
+      - 8500
+      - 8501
+      - 8600/tcp
+      - 8600/udp
+
+  dashboard:
+    image: consul
+    volumes:
+      - ./cfg/dc2/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
+      - ./cfg/dc2/client/tls.hcl:/etc/consul.d/tls.hcl:z
+      - ../../services/dashboard.hcl:/etc/consul.d/dashboard.hcl:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+
+  mesh-dc2:
+    image: consul
+    volumes:
+      - ./cfg/dc2/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
+      - ./cfg/dc2/client/tls.hcl:/etc/consul.d/tls.hcl:z
+      - /dev/zero:/etc/consul.d/mesh.env
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+
+  terminating-dc2:
+    image: consul
+    volumes:
+      - ./cfg/dc2/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
+      - ./cfg/dc1/client/tls.hcl:/etc/consul.d/tls.hcl:z
+      - /dev/zero:/etc/consul.d/terminating.env
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+  
+  legacy-node-dc2:
+    image: consul
+    volumes:
+      - /dev/null:/etc/consul.d/consul.hcl:z # mounting dev null to make config file empty so that Consul won't run
+      - ../../services/counting.hcl:/etc/consul.d/counting.hcl:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
