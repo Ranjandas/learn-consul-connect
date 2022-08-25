@@ -18,12 +18,15 @@ RUN dnf install -y consul \
 		   iproute \
 		   bind-utils \
 		   less \
-		   jq && \
+		   jq \
+		   procps-ng \
+		   iptables && \
     dnf clean all
 
 
 # Install hey
 ADD https://hey-release.s3.us-east-2.amazonaws.com/hey_linux_amd64 /usr/local/bin/hey
+RUN chmod +x /usr/local/bin/hey
 
 
 # Copy Envoy binary from envoy docker image
