@@ -1,6 +1,6 @@
 # Mesh Ingress Gateway
 
-In this scenario, we run two sample applications (`dashboard` and `counting) within the mesh and uses an Ingress Gateway to expose the dashboard application to external clients (outside the mesh).
+In this scenario, we run two sample applications (`dashboard` and `counting`) within the mesh and uses an Ingress Gateway to expose the dashboard application to external clients (outside the mesh).
 
 ## Diagram
 
