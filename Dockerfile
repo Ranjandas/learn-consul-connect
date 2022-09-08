@@ -1,9 +1,11 @@
 # Using multi-stage build for copying envoy binary from official docker image
-FROM docker.io/envoyproxy/envoy:v1.20.3 as envoy
+FROM docker.io/envoyproxy/envoy:v1.23.0 as envoy
 
 
 # Use Fedora 35 as the base image
 FROM registry.fedoraproject.org/fedora:35
+
+ARG CONSUL_VERSION=1.12.4
 
 # Add HashiCorp Fedora YUM repository
 ADD https://rpm.releases.hashicorp.com/fedora/hashicorp.repo /etc/yum.repos.d/
@@ -12,7 +14,7 @@ ADD https://rpm.releases.hashicorp.com/fedora/hashicorp.repo /etc/yum.repos.d/
 RUN echo "fastestmirror=True" >> /etc/dnf/dnf.conf
 
 # Install Consul and systemd (required for the init inside container)
-RUN dnf install -y consul \
+RUN dnf install -y consul-${CONSUL_VERSION} \
 		   systemd \
 		   tcpdump \
 		   iproute \
