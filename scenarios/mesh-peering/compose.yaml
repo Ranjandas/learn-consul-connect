@@ -1,0 +1,66 @@
+---
+# Datacenter DC1
+services:
+  consul-server-dc1:
+    image: consul
+    hostname: consul-server-dc1
+    volumes:
+      - ./cfg/dc1/server/:/etc/consul.d/:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+    ports:
+      - 8500:8500
+      - 8600:8600/tcp
+      - 8600:8600/udp
+
+  counting:
+    image: consul
+    volumes:
+      - ./cfg/dc1/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - ../../services/counting.hcl:/etc/consul.d/counting.hcl:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+
+  mesh-dc1:
+    image: consul
+    volumes:
+      - ./cfg/dc1/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - /dev/zero:/etc/consul.d/mesh.env
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+
+# Datacenter DC2
+
+  consul-server-dc2:
+    image: consul
+    hostname: consul-server-dc2
+    volumes:
+      - ./cfg/dc2/server/:/etc/consul.d/:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+    ports:
+      - 7500:8500
+      - 8600/tcp
+      - 8600/udp
+
+  dashboard:
+    image: consul
+    volumes:
+      - ./cfg/dc2/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - ../../services/peering/dashboard.hcl:/etc/consul.d/dashboard.hcl:z
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+
+  mesh-dc2:
+    image: consul
+    volumes:
+      - ./cfg/dc2/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - /dev/zero:/etc/consul.d/mesh.env
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
