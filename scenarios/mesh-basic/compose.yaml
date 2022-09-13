@@ -14,15 +14,6 @@ services:
       - 8600:8600/tcp
       - 8600:8600/udp
 
-
-  consul-client:
-    image: consul
-    volumes:
-      - ./cfg/client/consul.hcl:/etc/consul.d/consul.hcl:z
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    tmpfs:
-      - /run
-
   counting:
     image: consul
     volumes:
