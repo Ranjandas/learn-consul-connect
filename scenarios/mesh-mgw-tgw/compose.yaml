@@ -5,7 +5,8 @@ services:
     image: consul
     hostname: consul-server-dc1
     volumes:
-      - ./cfg/dc1/server/:/etc/consul.d/:z
+      - ./cfg/dc1/server/consul.hcl:/etc/consul.d/consul.hcl
+      - ./cfg/dc1/server/tls.hcl:/etc/consul.d/tls.hcl
       - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
       - ./certs/dc1/dc1-server-consul-0.pem:/etc/consul.d/cert.pem:z
       - ./certs/dc1/dc1-server-consul-0-key.pem:/etc/consul.d/key.pem:z
@@ -67,7 +68,8 @@ services:
     image: consul
     hostname: consul-server-dc2
     volumes:
-      - ./cfg/dc2/server/:/etc/consul.d/:z
+      - ./cfg/dc2/server/consul.hcl:/etc/consul.d/consul.hcl
+      - ./cfg/dc2/server/tls.hcl:/etc/consul.d/tls.hcl
       - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
       - ./certs/dc2/dc2-server-consul-0.pem:/etc/consul.d/cert.pem:z
       - ./certs/dc2/dc2-server-consul-0-key.pem:/etc/consul.d/key.pem:z

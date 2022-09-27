@@ -5,10 +5,11 @@ services:
     image: consul
     hostname: consul-server-dc1
     volumes:
-      - ./cfg/dc1/server/:/etc/consul.d/:z
-      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
-      - ./certs/dc1/dc1-server-consul-0.pem:/etc/consul.d/cert.pem:z
-      - ./certs/dc1/dc1-server-consul-0-key.pem:/etc/consul.d/key.pem:z
+      - ./cfg/dc1/server/consul.hcl:/etc/consul.d/consul.hcl
+      - ./cfg/dc1/server/tls.hcl:/etc/consul.d/tls.hcl
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
+      - ./certs/dc1/dc1-server-consul-0.pem:/etc/consul.d/cert.pem
+      - ./certs/dc1/dc1-server-consul-0-key.pem:/etc/consul.d/key.pem
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     tmpfs:
       - /run
@@ -21,10 +22,10 @@ services:
   counting:
     image: consul
     volumes:
-      - ./cfg/dc1/client/consul.hcl:/etc/consul.d/consul.hcl:z
-      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
-      - ./cfg/dc1/client/tls.hcl:/etc/consul.d/tls.hcl:z
-      - ../../services/counting.hcl:/etc/consul.d/counting.hcl:z
+      - ./cfg/dc1/client/consul.hcl:/etc/consul.d/consul.hcl
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
+      - ./cfg/dc1/client/tls.hcl:/etc/consul.d/tls.hcl
+      - ../../services/counting.hcl:/etc/consul.d/counting.hcl
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     tmpfs:
       - /run
@@ -32,9 +33,9 @@ services:
   mesh-dc1:
     image: consul
     volumes:
-      - ./cfg/dc1/client/consul.hcl:/etc/consul.d/consul.hcl:z
-      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
-      - ./cfg/dc1/client/tls.hcl:/etc/consul.d/tls.hcl:z
+      - ./cfg/dc1/client/consul.hcl:/etc/consul.d/consul.hcl
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
+      - ./cfg/dc1/client/tls.hcl:/etc/consul.d/tls.hcl
       - /dev/zero:/etc/consul.d/mesh.env
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     tmpfs:
@@ -46,10 +47,11 @@ services:
     image: consul
     hostname: consul-server-dc2
     volumes:
-      - ./cfg/dc2/server/:/etc/consul.d/:z
-      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
-      - ./certs/dc2/dc2-server-consul-0.pem:/etc/consul.d/cert.pem:z
-      - ./certs/dc2/dc2-server-consul-0-key.pem:/etc/consul.d/key.pem:z
+      - ./cfg/dc2/server/consul.hcl:/etc/consul.d/consul.hcl
+      - ./cfg/dc2/server/tls.hcl:/etc/consul.d/tls.hcl
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
+      - ./certs/dc2/dc2-server-consul-0.pem:/etc/consul.d/cert.pem
+      - ./certs/dc2/dc2-server-consul-0-key.pem:/etc/consul.d/key.pem
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     tmpfs:
       - /run
@@ -62,10 +64,10 @@ services:
   dashboard:
     image: consul
     volumes:
-      - ./cfg/dc2/client/consul.hcl:/etc/consul.d/consul.hcl:z
-      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
-      - ./cfg/dc2/client/tls.hcl:/etc/consul.d/tls.hcl:z
-      - ../../services/dashboard.hcl:/etc/consul.d/dashboard.hcl:z
+      - ./cfg/dc2/client/consul.hcl:/etc/consul.d/consul.hcl
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
+      - ./cfg/dc2/client/tls.hcl:/etc/consul.d/tls.hcl
+      - ../../services/dashboard.hcl:/etc/consul.d/dashboard.hcl
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     tmpfs:
       - /run
@@ -73,9 +75,9 @@ services:
   mesh-dc2:
     image: consul
     volumes:
-      - ./cfg/dc2/client/consul.hcl:/etc/consul.d/consul.hcl:z
-      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
-      - ./cfg/dc2/client/tls.hcl:/etc/consul.d/tls.hcl:z
+      - ./cfg/dc2/client/consul.hcl:/etc/consul.d/consul.hcl
+      - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
+      - ./cfg/dc2/client/tls.hcl:/etc/consul.d/tls.hcl
       - /dev/zero:/etc/consul.d/mesh.env
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     tmpfs:
