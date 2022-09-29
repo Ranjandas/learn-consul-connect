@@ -7,7 +7,6 @@ services:
     volumes:
       - ./cfg/dc1/server/consul.hcl:/etc/consul.d/consul.hcl
       - ./cfg/dc1/server/tls.hcl:/etc/consul.d/tls.hcl
-      - ./cfg/dc1/server/config-entries.hcl:/etc/consul.d/config-entries.hcl
       - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
       - ./certs/dc1/dc1-server-consul-0.pem:/etc/consul.d/cert.pem:z
       - ./certs/dc1/dc1-server-consul-0-key.pem:/etc/consul.d/key.pem:z
@@ -89,7 +88,7 @@ services:
       - ./cfg/dc2/client/consul.hcl:/etc/consul.d/consul.hcl:z
       - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem:z
       - ./cfg/dc2/client/tls.hcl:/etc/consul.d/tls.hcl:z
-      - ../../services/dashboard.hcl:/etc/consul.d/dashboard.hcl:z
+      - ../../services/federation/dashboard.hcl:/etc/consul.d/dashboard.hcl:z
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     tmpfs:
       - /run
