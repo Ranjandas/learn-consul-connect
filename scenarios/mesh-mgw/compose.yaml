@@ -7,6 +7,7 @@ services:
     volumes:
       - ./cfg/dc1/server/consul.hcl:/etc/consul.d/consul.hcl
       - ./cfg/dc1/server/tls.hcl:/etc/consul.d/tls.hcl
+      - ./cfg/dc1/server/config-entries.hcl:/etc/consul.d/config-entries.hcl
       - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
       - ./certs/dc1/dc1-server-consul-0.pem:/etc/consul.d/cert.pem
       - ./certs/dc1/dc1-server-consul-0-key.pem:/etc/consul.d/key.pem
