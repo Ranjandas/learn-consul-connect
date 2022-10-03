@@ -1,0 +1,11 @@
+runcmd:
+  - curl -sfL https://get.k3s.io | sh -
+  - mkdir -p /home/ubuntu/.kube/
+  - cp /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/config
+  - chown ubuntu:ubuntu /home/ubuntu/.kube/config
+  - k3s completion bash > /etc/bash_completion.d/k3s
+  - echo "export KUBECONFIG=/home/ubuntu/.kube/config" | tee -a /home/ubuntu/.bashrc
+  - echo "alias k=\'kubectl\'" | tee -a /home/ubuntu/.bashrc
+
+  - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash 
+  - helm completion bash > /etc/bash_completion.d/helm
