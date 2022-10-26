@@ -11,3 +11,5 @@ runcmd:
   - helm completion bash > /etc/bash_completion.d/helm
 
   - kubectl completion bash > /etc/bash_completion.d/kubectl
+  - curl -sL "https://releases.hashicorp.com/consul-k8s/0.49.0/consul-k8s_0.49.0_linux_$( [ $(uname -m) = aarch64 ] && echo arm64 || echo amd64).zip" | zcat > /usr/local/bin/consul-k8s
+  - chmod +x /usr/local/bin/consul-k8s
