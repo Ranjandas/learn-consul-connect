@@ -1,5 +1,6 @@
 runcmd:
-  - curl -sfL https://get.k3s.io | sh -
+  # INSTALL_K3S_VERSION=v1.24.7+k3s1 for Consul-K8S <=0.49.0 compatibility
+  - curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.24.7+k3s1 sh -
   - mkdir -p /home/ubuntu/.kube/
   - cp /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/config
   - chown ubuntu:ubuntu /home/ubuntu/.kube/config
