@@ -1,0 +1,55 @@
+# file: values.yaml
+
+global:
+  name: consul
+  datacenter: k3s-au
+
+  # TLS configures whether Consul components use TLS.
+  tls:
+    # TLS must be enabled for federation in Kubernetes.
+    enabled: true
+
+  federation:
+    enabled: true
+    # This will cause a Kubernetes secret to be created that
+    # can be imported by secondary datacenters to configure them
+    # for federation.
+    createFederationSecret: true
+
+  acls:
+    manageSystemACLs: true
+    # If ACLs are enabled, we must create a token for secondary
+    # datacenters to replicate ACLs.
+    createReplicationToken: true
+
+  # Gossip encryption secures the protocol Consul uses to quickly
+  # discover new nodes and detect failure.
+  gossipEncryption:
+    autoGenerate: true
+
+connectInject:
+  # Consul Connect service mesh must be enabled for federation.
+  enabled: true
+
+controller:
+  enabled: true
+
+meshGateway:
+  # Mesh gateways are gateways between datacenters. They must be enabled
+  # for federation in Kubernetes since the communication between datacenters
+  # goes through the mesh gateways.
+  enabled: true
+  replicas: 1
+  service:
+    port: 8443
+
+server:
+  replicas: 1
+  
+ui:
+  enabled: true
+  service:
+    type: LoadBalancer
+    port:
+      http: 9500
+      https: 9501

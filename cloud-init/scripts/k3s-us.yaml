@@ -1,0 +1,61 @@
+# file: values.yaml
+global:
+  name: consul
+  datacenter: k3s-us
+  tls:
+    enabled: true
+
+    # Here we're using the shared certificate authority from the primary
+    # datacenter that was exported via the federation secret.
+    caCert:
+      secretName: consul-federation
+      secretKey: caCert
+    caKey:
+      secretName: consul-federation
+      secretKey: caKey
+
+  acls:
+    manageSystemACLs: true
+
+    # Here we're importing the replication token that was
+    # exported from the primary via the federation secret.
+    replicationToken:
+      secretName: consul-federation
+      secretKey: replicationToken
+
+  federation:
+    enabled: true
+    k8sAuthMethodHost: https://${SECONDARY_IP}:6443
+    primaryDatacenter: k3s-au
+  gossipEncryption:
+    secretName: consul-federation
+    secretKey: gossipEncryptionKey
+connectInject:
+  enabled: true
+controller:
+  enabled: true
+meshGateway:
+  enabled: true
+  replicas: 1
+  service:
+    port: 8443
+server:
+  replicas: 1
+  # Here we're including the server config exported from the primary
+  # via the federation secret. This config includes the addresses of
+  # the primary datacenter's mesh gateways so Consul can begin federation.
+  extraVolumes:
+    - type: secret
+      name: consul-federation
+      items:
+        - key: serverConfigJSON
+          path: config.json
+      load: true
+
+ui:
+  enabled: true
+  service:
+    type: LoadBalancer
+    port:
+      http: 9500
+      https: 9501
