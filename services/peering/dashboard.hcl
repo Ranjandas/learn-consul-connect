@@ -8,7 +8,7 @@ service {
         upstreams = [
           {
             destination_name = "counting"
-	    destination_peer = "dc2"
+	    destination_peer = "dc1"
             local_bind_port  = 5000
           }
         ]
