@@ -9,7 +9,7 @@ config_entries {
         Name = "counting"
 	Consumers = [
 	  {
-	    PeerName = "dc2"
+	    Peer = "dc2"
 	  }
 	]
       }
