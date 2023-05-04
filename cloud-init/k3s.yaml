@@ -14,3 +14,56 @@ runcmd:
   - kubectl completion bash > /etc/bash_completion.d/kubectl
   - curl -sL "https://releases.hashicorp.com/consul-k8s/0.49.0/consul-k8s_0.49.0_linux_$( [ $(uname -m) = aarch64 ] && echo arm64 || echo amd64).zip" | zcat > /usr/local/bin/consul-k8s
   - chmod +x /usr/local/bin/consul-k8s
+
+write_files:
+  - path: /home/ubuntu/counting.yaml
+    defer: true
+    encoding: base64
+    content: |
+      YXBpVmVyc2lvbjogdjEKa2luZDogU2VydmljZUFjY291bnQKbWV0YWRhdGE6CiAgbmFtZTogY291
+      bnRpbmcKICBuYW1lc3BhY2U6IGRlZmF1bHQKYXV0b21vdW50U2VydmljZUFjY291bnRUb2tlbjog
+      dHJ1ZQotLS0KYXBpVmVyc2lvbjogdjEKa2luZDogU2VydmljZQptZXRhZGF0YToKICBuYW1lOiBj
+      b3VudGluZwogIG5hbWVzcGFjZTogZGVmYXVsdAogIGxhYmVsczoKICAgIGFwcDogY291bnRpbmcK
+      c3BlYzoKICB0eXBlOiBDbHVzdGVySVAKICBwb3J0czoKICAtIHBvcnQ6IDkwMDEKICAgIHRhcmdl
+      dFBvcnQ6IDkwMDEKICBzZWxlY3RvcjoKICAgIGFwcDogY291bnRpbmcKLS0tCmFwaVZlcnNpb246
+      IGFwcHMvdjEKa2luZDogRGVwbG95bWVudAptZXRhZGF0YToKICBsYWJlbHM6CiAgICBhcHA6IGNv
+      dW50aW5nCiAgbmFtZTogY291bnRpbmcKc3BlYzoKICByZXBsaWNhczogMQogIHNlbGVjdG9yOgog
+      ICAgbWF0Y2hMYWJlbHM6CiAgICAgIGFwcDogY291bnRpbmcKICB0ZW1wbGF0ZToKICAgIG1ldGFk
+      YXRhOgogICAgICBhbm5vdGF0aW9uczoKICAgICAgICBjb25zdWwuaGFzaGljb3JwLmNvbS9jb25u
+      ZWN0LWluamVjdDogJ3RydWUnCiAgICAgIGxhYmVsczoKICAgICAgICBhcHA6IGNvdW50aW5nCiAg
+      ICBzcGVjOgogICAgICBzZXJ2aWNlQWNjb3VudE5hbWU6IGNvdW50aW5nCiAgICAgIGNvbnRhaW5l
+      cnM6CiAgICAgIC0gbmFtZTogY291bnRpbmcKICAgICAgICBpbWFnZTogaGFzaGljb3JwL2NvdW50
+      aW5nLXNlcnZpY2U6MC4wLjIKICAgICAgICBpbWFnZVB1bGxQb2xpY3k6IElmTm90UHJlc2VudAog
+      ICAgICAgIHBvcnRzOgogICAgICAgIC0gY29udGFpbmVyUG9ydDogOTAwMQoK
+
+  - path: /home/ubuntu/dashboard.yaml
+    defer: true
+    encoding: base64
+    content: |
+      YXBpVmVyc2lvbjogdjEKa2luZDogU2VydmljZUFjY291bnQKbWV0YWRhdGE6CiAgbmFtZTogZGFz
+      aGJvYXJkCiAgbmFtZXNwYWNlOiBkZWZhdWx0CmF1dG9tb3VudFNlcnZpY2VBY2NvdW50VG9rZW46
+      IHRydWUKLS0tCmFwaVZlcnNpb246IHYxCmtpbmQ6IFNlcnZpY2UKbWV0YWRhdGE6CiAgbmFtZTog
+      ZGFzaGJvYXJkCiAgbmFtZXNwYWNlOiBkZWZhdWx0CiAgbGFiZWxzOgogICAgYXBwOiBkYXNoYm9h
+      cmQKc3BlYzoKICB0eXBlOiBDbHVzdGVySVAKICBwb3J0czoKICAtIHBvcnQ6IDkwMDIKICAgIHRh
+      cmdldFBvcnQ6IDkwMDIKICBzZWxlY3RvcjoKICAgIGFwcDogZGFzaGJvYXJkCi0tLQphcGlWZXJz
+      aW9uOiBhcHBzL3YxCmtpbmQ6IERlcGxveW1lbnQKbWV0YWRhdGE6CiAgbGFiZWxzOgogICAgYXBw
+      OiBkYXNoYm9hcmQKICBuYW1lOiBkYXNoYm9hcmQKc3BlYzoKICByZXBsaWNhczogMQogIHNlbGVj
+      dG9yOgogICAgbWF0Y2hMYWJlbHM6CiAgICAgIGFwcDogZGFzaGJvYXJkCiAgdGVtcGxhdGU6CiAg
+      ICBtZXRhZGF0YToKICAgICAgYW5ub3RhdGlvbnM6CiAgICAgICAgY29uc3VsLmhhc2hpY29ycC5j
+      b20vY29ubmVjdC1pbmplY3Q6ICd0cnVlJwogICAgICAgIGNvbnN1bC5oYXNoaWNvcnAuY29tL2Nv
+      bm5lY3Qtc2VydmljZS11cHN0cmVhbXM6ICdjb3VudGluZzo5MDAxJwogICAgICBsYWJlbHM6CiAg
+      ICAgICAgYXBwOiBkYXNoYm9hcmQKICAgIHNwZWM6CiAgICAgIHNlcnZpY2VBY2NvdW50TmFtZTog
+      ZGFzaGJvYXJkCiAgICAgIGNvbnRhaW5lcnM6CiAgICAgIC0gbmFtZTogZGFzaGJvYXJkCiAgICAg
+      ICAgaW1hZ2U6IGhhc2hpY29ycC9kYXNoYm9hcmQtc2VydmljZTowLjAuNAogICAgICAgIGltYWdl
+      UHVsbFBvbGljeTogSWZOb3RQcmVzZW50CiAgICAgICAgcG9ydHM6CiAgICAgICAgLSBjb250YWlu
+      ZXJQb3J0OiA5MDAyCiAgICAgICAgZW52OgogICAgICAgIC0gbmFtZTogQ09VTlRJTkdfU0VSVklD
+      RV9VUkwKICAgICAgICAgIHZhbHVlOiAnaHR0cDovL2xvY2FsaG9zdDo5MDAxJwoK
+
+  - path: /home/ubuntu/intention.yaml
+    defer: true
+    encoding: base64
+    content: |
+      YXBpVmVyc2lvbjogY29uc3VsLmhhc2hpY29ycC5jb20vdjFhbHBoYTEKa2luZDogU2VydmljZUlu
+      dGVudGlvbnMKbWV0YWRhdGE6CiAgbmFtZTogZGFzaGJvYXJkLXRvLWNvdW50aW5nCnNwZWM6CiAg
+      ZGVzdGluYXRpb246CiAgICBuYW1lOiBjb3VudGluZwogIHNvdXJjZXM6CiAgICAtIG5hbWU6IGRh
+      c2hib2FyZAogICAgICBhY3Rpb246IGFsbG93Cg==
