@@ -1,0 +1,40 @@
+bootcmd:
+  - "curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -"
+  - "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+apt:
+  sources:
+    hashicorp:
+      source: "deb https://apt.releases.hashicorp.com $RELEASE main"
+    docker:
+      source: "deb https://download.docker.com/linux/ubuntu $RELEASE stable"
+package_update: true
+packages:
+  - nomad-enterprise
+  - consul-enterprise
+  - unzip
+  - jq
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+
+write_files:
+  - content: |
+      net.bridge.bridge-nf-call-arptables = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.bridge.bridge-nf-call-iptables = 1
+    path: /etc/sysctl.d/bridge.conf
+
+runcmd:
+  # CNI Plugins Installation
+  # ref: https://developer.hashicorp.com/nomad/docs/integrations/consul-connect#cni-plugins
+
+  - curl  -L -o cni-plugins.tgz "https://github.com/containernetworking/plugins/releases/download/v1.0.0/cni-plugins-linux-$( [ $(uname -m) = aarch64 ] && echo arm64 || echo amd64)"-v1.0.0.tgz
+  - mkdir -p /opt/cni/bin
+  - tar -C /opt/cni/bin -xzf cni-plugins.tgz
+
+  - modprobe br_netfilter
+  - echo 1 | sudo tee /proc/sys/net/bridge/bridge-nf-call-arptables
+  - echo 1 | sudo tee /proc/sys/net/bridge/bridge-nf-call-ip6tables
+  - echo 1 | sudo tee /proc/sys/net/bridge/bridge-nf-call-iptables
+
+  - usermod -aG docker ubuntu
