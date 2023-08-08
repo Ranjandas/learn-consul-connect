@@ -2,6 +2,8 @@
 
 This scenario runs a Nomad + Consul Cluster with 3 Server agents and 1 Client Agent (that can be scaled).
 
+> WARNING: Please note that only `exec` driver is supported on this environment. The sample job is using the `exec` driver. 
+
 ## Prerequisite
 
 * Docker (This is tested and working on the latest Orbstack version)
