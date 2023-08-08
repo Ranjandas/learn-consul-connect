@@ -2,7 +2,11 @@
 
 services:
   server:
-    build: ../../
+    build:
+      context: ../../
+      dockerfile: Dockerfile.nomad
+    deploy:
+      replicas: 3
     cgroup: host
     volumes:
       - ./cfg/server/consul.hcl:/etc/consul.d/consul.hcl:z
@@ -11,14 +15,15 @@ services:
     tmpfs:
       - /run
     ports:
-      - 8500:8500
-      - 8501:8501
-      - 4646:4646
-      - 8600:8600/tcp
-      - 8600:8600/udp
+      - 8500
+      - 8501
+      - 4646
+      - 8600
 
   worker:
-    build: ../../
+    build:
+      context: ../../
+      dockerfile: Dockerfile.nomad
     cgroup: host
     privileged: true
     volumes:

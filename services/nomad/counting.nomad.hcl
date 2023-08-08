@@ -15,7 +15,7 @@ job "counting" {
 
     task "counting" {
       artifact {
-        source      = "https://github.com/hashicorp/demo-consul-101/releases/download/v0.0.5/counting-service_linux_amd64.zip"
+        source      = "https://github.com/hashicorp/demo-consul-101/releases/download/v0.0.5/counting-service_linux_${attr.cpu.arch}.zip"
         destination = "local/counting"
         mode        = "file"
       }

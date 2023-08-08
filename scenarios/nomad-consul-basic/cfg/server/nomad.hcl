@@ -7,5 +7,8 @@ server {
   # license_path is required for Nomad Enterprise as of Nomad v1.1.1+
   #license_path = "/etc/nomad.d/license.hclic"
   enabled          = true
-  bootstrap_expect = 1
+  bootstrap_expect = 3
+  server_join {
+    retry_join = ["server"]
+  }
 }

@@ -7,6 +7,8 @@ job "dashboard" {
       }
     }
 
+    count = 3
+
     service {
       name = "dashboard"
       port = "9001"
@@ -29,7 +31,7 @@ EOH
       }
 
       artifact {
-        source      = "https://github.com/hashicorp/demo-consul-101/releases/download/v0.0.5/dashboard-service_linux_amd64.zip"
+        source      = "https://github.com/hashicorp/demo-consul-101/releases/download/v0.0.5/dashboard-service_linux_${attr.cpu.arch}.zip"
         destination = "local/dashboard"
         mode        = "file"
       }

@@ -1,5 +1,5 @@
 server = true
-bootstrap = true
+bootstrap_expect = 3
 
 data_dir = "/opt/consul"
 
@@ -15,3 +15,5 @@ connect {
 }
 
 recursors =["8.8.8.8"]
+
+retry_join = ["server"]
