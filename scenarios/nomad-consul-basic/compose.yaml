@@ -1,0 +1,34 @@
+---
+
+services:
+  server:
+    build:
+      context: ../../
+      dockerfile: Dockerfile.nomad
+    deploy:
+      replicas: 3
+    cgroup: host
+    volumes:
+      - ./cfg/server/consul.hcl:/etc/consul.d/consul.hcl:z
+      - ./cfg/server/nomad.hcl:/etc/nomad.d/nomad.hcl:z
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    tmpfs:
+      - /run
+    ports:
+      - 8500
+      - 8501
+      - 4646
+      - 8600
+
+  worker:
+    build:
+      context: ../../
+      dockerfile: Dockerfile.nomad
+    cgroup: host
+    privileged: true
+    volumes:
+      - ./cfg/client/consul.hcl:/etc/consul.d/consul.hcl:z
+      - ./cfg/client/nomad.hcl:/etc/nomad.d/nomad.hcl:z
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    tmpfs:
+      - /run
