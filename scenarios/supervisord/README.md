@@ -1,6 +1,8 @@
 # Consul Supervisord Scenarios
 
-This directory contains various scenarios that uses supervisord to run multi-node consul cluster on a single host binding to various loopback IP Addresses (`127.0.0.x`). 
+This directory contains various scenarios that uses supervisord to run multi-node consul cluster on a single host binding to various loopback IP Addresses (`127.0.0.x`).
+
+![](https://user-images.githubusercontent.com/3266468/266887070-72eb163c-027c-4215-8196-13dfdf88e1cf.png)
 
 ## Prerequisite
 
