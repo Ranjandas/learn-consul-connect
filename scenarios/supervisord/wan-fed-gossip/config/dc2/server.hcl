@@ -1,6 +1,7 @@
 bootstrap_expect = 3
 
 datacenter = "dc2"
+primary_datacenter = "dc1"
 
 ui_config {
   enabled = true
