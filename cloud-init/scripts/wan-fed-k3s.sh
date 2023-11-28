@@ -1,7 +1,7 @@
 #!/bin/bash
 
-multipass info k3s-au &> /dev/null || multipass launch -n k3s-au -m 4G -c 2 --cloud-init ./k3s.yaml
-multipass info k3s-us &> /dev/null || multipass launch -n k3s-us -m 4G -c 2 --cloud-init ./k3s.yaml
+multipass info k3s-au &> /dev/null || multipass launch -n k3s-au -m 4G -c 2 --cloud-init ../k3s.yaml
+multipass info k3s-us &> /dev/null || multipass launch -n k3s-us -m 4G -c 2 --cloud-init ../k3s.yaml
 
 multipass exec k3s-au helm repo add hashicorp https://helm.releases.hashicorp.com
 multipass exec k3s-us helm repo add hashicorp https://helm.releases.hashicorp.com
