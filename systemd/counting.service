@@ -4,8 +4,11 @@ Requires=network-online.target
 After=network-online.target
 
 [Service]
-Environment=PORT=9003
-ExecStart=/usr/local/bin/counting
+Environment=LISTEN_ADDR=127.0.0.1:9003
+Environment=MESSAGE="HELLO FROM COUNTING"
+Environment=NAME=counting
+EnvironmentFile=-/etc/consul.d/counting.env
+ExecStart=/usr/local/bin/fake-service
 Restart=on-failure
 
 [Install]
