@@ -4,9 +4,12 @@ Requires=network-online.target
 After=network-online.target
 
 [Service]
-Environment=PORT=9002
-Environment=COUNTING_SERVICE_URL="http://localhost:5000"
-ExecStart=/usr/local/bin/dashboard
+Environment=LISTEN_ADDR=127.0.0.1:9002
+Environment=MESSAGE="HELLO FROM DASHBOARD"
+Environment=NAME=DASHBOARD
+Environment=UPSTREAM_URIS="http://localhost:5000"
+EnvironmentFile=-/etc/consul.d/dashboard.env
+ExecStart=/usr/local/bin/fake-service
 Restart=on-failure
 
 [Install]

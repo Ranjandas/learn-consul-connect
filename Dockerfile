@@ -1,9 +1,5 @@
-# Using multi-stage build for copying envoy binary from official docker image
-FROM docker.io/envoyproxy/envoy:v1.20.3 as envoy
-
-
 # Use Fedora 35 as the base image
-FROM registry.fedoraproject.org/fedora:35
+FROM registry.fedoraproject.org/fedora:39
 
 # Add HashiCorp Fedora YUM repository
 ADD https://rpm.releases.hashicorp.com/fedora/hashicorp.repo /etc/yum.repos.d/
@@ -20,7 +16,8 @@ RUN dnf install -y consul \
 		   less \
 		   jq \
 		   procps-ng \
-		   iptables && \
+		   iptables \
+		   hashicorp-envoy && \
     dnf clean all
 
 
@@ -29,15 +26,9 @@ ADD https://hey-release.s3.us-east-2.amazonaws.com/hey_linux_amd64 /usr/local/bi
 RUN chmod +x /usr/local/bin/hey
 
 
-# Copy Envoy binary from envoy docker image
-COPY --from=envoy /usr/local/bin/envoy /usr/local/bin/envoy
-
-
-# Install HashiCorp counting and dashboard binaries
-RUN curl -sL https://github.com/hashicorp/demo-consul-101/releases/download/v0.0.5/dashboard-service_linux_amd64.zip | zcat  >> /usr/local/bin/dashboard && \
-    curl -sL https://github.com/hashicorp/demo-consul-101/releases/download/v0.0.5/counting-service_linux_amd64.zip | zcat >> /usr/local/bin/counting && \
-    chmod +x /usr/local/bin/dashboard && \
-    chmod +x /usr/local/bin/counting
+# Install FakeService
+RUN curl -sL https://github.com/nicholasjackson/fake-service/releases/download/v0.26.0/fake_service_linux_amd64.zip | zcat  >> /usr/local/bin/fake-service && \
+    chmod +x /usr/local/bin/fake-service
 
 
 # Copy all the systemd unit files 
