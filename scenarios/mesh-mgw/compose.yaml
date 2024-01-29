@@ -11,7 +11,7 @@ services:
       - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
       - ./certs/dc1/dc1-server-consul-0.pem:/etc/consul.d/cert.pem
       - ./certs/dc1/dc1-server-consul-0-key.pem:/etc/consul.d/key.pem
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
     tmpfs:
       - /run
     ports:
@@ -19,6 +19,7 @@ services:
       - 8501:8501
       - 8600:8600/tcp
       - 8600:8600/udp
+    cgroup: host
 
   counting:
     image: consul
@@ -27,9 +28,10 @@ services:
       - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
       - ./cfg/dc1/client/tls.hcl:/etc/consul.d/tls.hcl
       - ../../services/counting.hcl:/etc/consul.d/counting.hcl
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
     tmpfs:
       - /run
+    cgroup: host
 
   mesh-dc1:
     image: consul
@@ -38,9 +40,10 @@ services:
       - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
       - ./cfg/dc1/client/tls.hcl:/etc/consul.d/tls.hcl
       - /dev/zero:/etc/consul.d/mesh.env
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
     tmpfs:
       - /run
+    cgroup: host
 
 # Datacenter DC2
 
@@ -53,7 +56,7 @@ services:
       - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
       - ./certs/dc2/dc2-server-consul-0.pem:/etc/consul.d/cert.pem
       - ./certs/dc2/dc2-server-consul-0-key.pem:/etc/consul.d/key.pem
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
     tmpfs:
       - /run
     ports:
@@ -61,6 +64,7 @@ services:
       - 8501
       - 8600/tcp
       - 8600/udp
+    cgroup: host
 
   dashboard:
     image: consul
@@ -69,9 +73,10 @@ services:
       - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
       - ./cfg/dc2/client/tls.hcl:/etc/consul.d/tls.hcl
       - ../../services/federation/dashboard.hcl:/etc/consul.d/dashboard.hcl
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
     tmpfs:
       - /run
+    cgroup: host
 
   mesh-dc2:
     image: consul
@@ -80,6 +85,7 @@ services:
       - ./certs/consul-agent-ca.pem:/etc/consul.d/consul-agent-ca.pem
       - ./cfg/dc2/client/tls.hcl:/etc/consul.d/tls.hcl
       - /dev/zero:/etc/consul.d/mesh.env
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
     tmpfs:
       - /run
+    cgroup: host

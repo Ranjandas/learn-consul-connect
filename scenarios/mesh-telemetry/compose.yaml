@@ -6,39 +6,42 @@ services:
     hostname: consul-server-0
     volumes:
       - ./cfg/server/:/etc/consul.d/:z
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
     tmpfs:
       - /run
     ports:
       - 8500:8500
       - 8501
       - 8600
+    cgroup: host
 
   consul-server-1:
     image: consul
     hostname: consul-server-1
     volumes:
       - ./cfg/server/:/etc/consul.d/:z
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
     tmpfs:
       - /run
     ports:
       - 8500
       - 8501
       - 8600
+    cgroup: host
         
   consul-server-2:
     image: consul
     hostname: consul-server-2
     volumes:
       - ./cfg/server/:/etc/consul.d/:z
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
     tmpfs:
       - /run
     ports:
       - 8500
       - 8501
       - 8600
+    cgroup: host
 
   counting:
     image: consul
@@ -46,9 +49,10 @@ services:
     volumes:
       - ./cfg/client/consul.hcl:/etc/consul.d/consul.hcl:z
       - ../../services/counting.hcl:/etc/consul.d/counting.hcl:z
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
     tmpfs:
       - /run
+    cgroup: host
 
   dashboard:
     image: consul
@@ -56,9 +60,10 @@ services:
     volumes:
       - ./cfg/client/consul.hcl:/etc/consul.d/consul.hcl:z
       - ../../services/dashboard.hcl:/etc/consul.d/dashboard.hcl:z
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
     tmpfs:
       - /run
+    cgroup: host
 
   prometheus:
     image: prom/prometheus
@@ -66,3 +71,4 @@ services:
       - ./cfg/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - 9090:9090
+    cgroup: host

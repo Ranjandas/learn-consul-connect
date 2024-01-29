@@ -1,6 +1,9 @@
 # Use Fedora 35 as the base image
 FROM registry.fedoraproject.org/fedora:39
 
+ARG CONSUL_VERSION=1.17.2
+ARG ENVOY_VERSION=1.27.2
+
 # Add HashiCorp Fedora YUM repository
 ADD https://rpm.releases.hashicorp.com/fedora/hashicorp.repo /etc/yum.repos.d/
 
@@ -8,7 +11,7 @@ ADD https://rpm.releases.hashicorp.com/fedora/hashicorp.repo /etc/yum.repos.d/
 RUN echo "fastestmirror=True" >> /etc/dnf/dnf.conf
 
 # Install Consul and systemd (required for the init inside container)
-RUN dnf install -y consul \
+RUN dnf install -y consul-$CONSUL_VERSION \
 		   systemd \
 		   tcpdump \
 		   iproute \
@@ -17,17 +20,13 @@ RUN dnf install -y consul \
 		   jq \
 		   procps-ng \
 		   iptables \
-		   hashicorp-envoy && \
+		   hashicorp-envoy-$ENVOY_VERSION \
+		   httpd-tools && \
     dnf clean all
 
 
-# Install hey
-ADD https://hey-release.s3.us-east-2.amazonaws.com/hey_linux_amd64 /usr/local/bin/hey
-RUN chmod +x /usr/local/bin/hey
-
-
 # Install FakeService
-RUN curl -sL https://github.com/nicholasjackson/fake-service/releases/download/v0.26.0/fake_service_linux_amd64.zip | zcat  >> /usr/local/bin/fake-service && \
+RUN curl -sL https://github.com/nicholasjackson/fake-service/releases/download/v0.26.2/fake_service_linux_$( [ $(uname -m) = aarch64 ] && echo arm64 || echo amd64).zip | zcat  >> /usr/local/bin/fake-service && \
     chmod +x /usr/local/bin/fake-service
 
 
