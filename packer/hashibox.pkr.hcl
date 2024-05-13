@@ -7,7 +7,6 @@ packer {
   }
 }
 
-
 variable "consul_version" {
   type        = string
   default     = "1.18"
@@ -48,7 +47,7 @@ source "qemu" "hashibox" {
   boot_command = []
   net_device   = "virtio-net"
 
-  output_directory = "artifacts/qemu/c-${var.consul_version}-n-${var.nomad_version}"
+  output_directory = ".artifacts/qemu/c-${var.consul_version}-n-${var.nomad_version}"
 
   qemu_binary  = "qemu-system-aarch64"
   accelerator  = "hvf"
@@ -95,11 +94,5 @@ build {
 
       "sudo systemctl disable docker consul nomad"
     ]
-
-  }
-
-  post-processor "checksum" {
-    checksum_types = ["sha256"]
-    output         = "hashibox_c-${var.consul_version}-n-${var.nomad_version}-{{.ChecksumType}}.CHECKSUM"
   }
 }

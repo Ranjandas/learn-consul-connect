@@ -1,0 +1,70 @@
+mounts: []
+containerd:
+  system: false
+  user: false
+provision:
+  - mode: system # configure Consul
+    script: |
+      #!/bin/sh
+      cat <<-EOF | tee /etc/consul.d/address.hcl
+      bind_addr = {{ "\"{{ GetInterfaceIP \\\"eth0\\\"}}\"" }}
+      client_addr = "0.0.0.0"
+      #retry_join = {{ "[\"{{ GetInterfaceIP \\\"eth0\\\"}}\"]" }}
+      retry_join = ["localhost"]
+      EOF
+
+      cat <<-EOF | tee /etc/consul.d/server.hcl
+      server = true
+      bootstrap_expect = 1
+      EOF
+
+      cat <<-EOF | tee /etc/consul.d/connect.hcl
+      connect {
+        enabled = true
+      }
+      EOF
+
+  - mode: system # configure Nomad
+    script: |
+      cat <<-EOF | tee /etc/nomad.d/nomad.hcl
+      data_dir  = "/opt/nomad/data"
+      bind_addr = "0.0.0.0"
+
+      server {
+        # license_path is required for Nomad Enterprise as of Nomad v1.1.1+
+        #license_path = "/etc/nomad.d/license.hclic"
+        enabled          = true
+        bootstrap_expect = 1
+
+        server_join {
+          retry_join = ["localhost"]
+        }
+      }
+      
+      client {
+        enabled = true
+        servers = ["localhost"]
+      }
+      EOF
+
+      cat <<-EOF | tee /etc/sysctl.d/bridge.conf
+      net.bridge.bridge-nf-call-arptables = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.bridge.bridge-nf-call-iptables = 1
+      EOF
+
+      # link the CNI directory
+      mkdir /opt/cni
+      ln -s /usr/libexec/cni/ /opt/cni/bin
+  - mode:
+    script: |
+      systemctl enable --now docker
+      systemctl enable --now nomad consul
+  - mode: user
+    script: |
+      #!/bin/sh
+      nomad -autocomplete-install
+      consul -autocomplete-install
+networks:
+  - lima: user-v2
+vmType: qemu
