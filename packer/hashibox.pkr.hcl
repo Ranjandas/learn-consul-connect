@@ -27,7 +27,7 @@ variable "fedora_iso_url" {
 
 variable "fedora_iso_checksum" {
   type        = string
-  default     = "file:https://download.fedoraproject.org/pub/fedora/linux/releases/40/Cloud/aarch64/images/Fedora-Cloud-40-1.14-aarch64-CHECKSUM"
+  default     = "https://download.fedoraproject.org/pub/fedora/linux/releases/40/Cloud/aarch64/images/Fedora-Cloud-40-1.14-aarch64-CHECKSUM"
   description = "Checksum in the packer format of the cloud image"
 }
 
