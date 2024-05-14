@@ -17,9 +17,13 @@ The following steps should be done before trying to run the scenarios.
     Max brk space used 0
     182 extents written (0 MB)
     ```
-
-2. Build a source image using packer. If you are intending to use the default versions configued in the repo, run packer without any arguments. This will create the image file inside `<repo-root>/packer/artifacts/qemu/c-<consul-version>-n-<nomad-version>` directory.
+_In case you don't have mkisofs installed, please do that first! _
+   ```
+    $ brew install dvdrtools
+   ```
+2. Build a source image using packer from the `<repo-root>/packer` directory. If you are intending to use the default versions configued in the repo, run packer without any arguments. This will create the image file inside `<repo-root>/packer/artifacts/qemu/c-<consul-version>-n-<nomad-version>` directory.
     ```
+    packer init .
     packer build hashibox.pkr.hcl
     ```
     
@@ -29,7 +33,7 @@ The following steps should be done before trying to run the scenarios.
     packer build -var-file variables.pkrvars.hcl hashibox.pkr.hcl
     ```
 
-3. Once the above two steps are done, you can go to specific scenario directory and run the makefile. The makefiles commonly supports the following targets:
+3. Once the above two steps are done, you can go to specific scenario directory (`<repo-root>/packer/artifacts/qemu/c-<consul-version>-n-<nomad-version>`) and run the makefile. The makefiles commonly supports the following targets:
     
     * `create`: This creates and starts lima VM[s]
     * `start`: This starts the VM[s]
