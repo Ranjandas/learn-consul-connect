@@ -21,13 +21,15 @@ variable "nomad_version" {
 
 variable "fedora_iso_url" {
   type        = string
-  default     = "https://download.fedoraproject.org/pub/fedora/linux/releases/40/Cloud/aarch64/images/Fedora-Cloud-Base-Generic.aarch64-40-1.14.qcow2"
+  default     = "https://fedora.mirror.digitalpacific.com.au/linux/releases/40/Cloud/x86_64/images/Fedora-Cloud-Base-Generic.x86_64-40-1.14.qcow2"
+#  default     = "https://download.fedoraproject.org/pub/fedora/linux/releases/40/Cloud/aarch64/images/Fedora-Cloud-Base-Generic.aarch64-40-1.14.qcow2"
   description = "Fedora Cloud Image URL - qcow2 format"
 }
 
 variable "fedora_iso_checksum" {
   type        = string
-  default     = "file:https://download.fedoraproject.org/pub/fedora/linux/releases/40/Cloud/aarch64/images/Fedora-Cloud-40-1.14-aarch64-CHECKSUM"
+  default     = "file:https://fedora.mirror.digitalpacific.com.au/linux/releases/40/Cloud/x86_64/images/Fedora-Cloud-40-1.14-x86_64-CHECKSUM"
+#  default     = "file:https://download.fedoraproject.org/pub/fedora/linux/releases/40/Cloud/aarch64/images/Fedora-Cloud-40-1.14-aarch64-CHECKSUM"
   description = "Checksum in the packer format of the cloud image"
 }
 
@@ -49,18 +51,18 @@ source "qemu" "hashibox" {
 
   output_directory = ".artifacts/qemu/c-${var.consul_version}-n-${var.nomad_version}"
 
-  qemu_binary  = "qemu-system-aarch64"
-  accelerator  = "hvf"
-  cpu_model    = "cortex-a57"
-  machine_type = "virt"
+  # qemu_binary  = "qemu-system-aarch64"
+   accelerator  = "hvf"
+  # cpu_model    = "cortex-a57"
+  # machine_type = "virt"
 
-  cpus   = 4
-  memory = 2048
+  cpus   = 8
+  memory = 5120
 
 
-  efi_boot          = true
-  efi_firmware_code = "/opt/homebrew/share/qemu/edk2-aarch64-code.fd"
-  efi_firmware_vars = "/opt/homebrew/share/qemu/edk2-arm-vars.fd"
+  # efi_boot          = true
+  # efi_firmware_code = "/opt/homebrew/share/qemu/edk2-aarch64-code.fd"
+  # efi_firmware_vars = "/opt/homebrew/share/qemu/edk2-arm-vars.fd"
 
   qemuargs = [
     ["-cdrom", "userdata/cidata.iso"],
