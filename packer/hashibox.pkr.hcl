@@ -88,6 +88,7 @@ build {
     ]
     inline = [
       "sudo dnf clean all",
+      "sudo dnf install -y unzip wget", 
       "sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo",
       "sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
 
