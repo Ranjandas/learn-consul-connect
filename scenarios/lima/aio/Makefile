@@ -10,7 +10,7 @@ endif
 
 .PHONY=create, start, stop, destroy
 create:
-	limactl start hashibox.yaml --name srv01 --set='. |= .images[0].location="file://$(current_dir)../../../packer/.artifacts/qemu/c-$(consul)-n-$(nomad)/packer-hashibox"' --tty=false
+	limactl start hashibox.yaml --name srv01 --set='. |= .images[0].location="file://$(current_dir)../../../packer/.artifacts/qemu/c-$(consul)-n-$(nomad)/c-$(consul)-n-$(nomad).qcow2"' --tty=false
 
 start:
 	limactl start srv01
