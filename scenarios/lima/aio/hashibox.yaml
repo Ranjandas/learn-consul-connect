@@ -6,28 +6,32 @@ provision:
   - mode: system # configure Consul
     script: |
       #!/bin/sh
-      cat <<-EOF | tee /etc/consul.d/address.hcl
+      cat <<-EOF | tee /etc/consul.d/consul.hcl
+      data_dir  = "/opt/consul/data"
+      log_level  = "INFO"
       bind_addr = {{ "\"{{ GetInterfaceIP \\\"eth0\\\"}}\"" }}
       client_addr = "0.0.0.0"
-      #retry_join = {{ "[\"{{ GetInterfaceIP \\\"eth0\\\"}}\"]" }}
       retry_join = ["localhost"]
-      EOF
+      
 
-      cat <<-EOF | tee /etc/consul.d/server.hcl
-      server = true
-      bootstrap_expect = 1
-      EOF
+      ui_config {
+        enabled = true
+      }
 
-      cat <<-EOF | tee /etc/consul.d/connect.hcl
       connect {
         enabled = true
       }
+
+      server = true
+      bootstrap_expect = 1
+
       EOF
 
   - mode: system # configure Nomad
     script: |
       cat <<-EOF | tee /etc/nomad.d/nomad.hcl
       data_dir  = "/opt/nomad/data"
+      log_level  = "INFO"
       bind_addr = "0.0.0.0"
 
       server {
@@ -40,11 +44,18 @@ provision:
           retry_join = ["localhost"]
         }
       }
-      
+
       client {
         enabled = true
         servers = ["localhost"]
       }
+      
+      plugin "raw_exec" {
+        config {
+        enabled = true
+        }
+      }
+
       EOF
 
       cat <<-EOF | tee /etc/sysctl.d/bridge.conf
