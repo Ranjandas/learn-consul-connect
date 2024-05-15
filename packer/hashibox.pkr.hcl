@@ -45,7 +45,7 @@ source "qemu" "hashibox" {
   disk_image       = true
 
   format = "qcow2"
-
+  vm_name = "c-${var.consul_version}-n-${var.nomad_version}.qcow2"
   boot_command = []
   net_device   = "virtio-net"
 
