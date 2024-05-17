@@ -17,7 +17,7 @@ provision:
 
           # Set the config files accordingly 
           if [[ $mode == "server" ]]; then
-          cat << EOF > /etc/consul.d/consul.hcl
+          cat <<-EOF > /etc/consul.d/consul.hcl
             data_dir  = "/opt/consul/data"
             log_level  = "INFO"
             bind_addr = {{ "\"{{ GetInterfaceIP \\\"eth0\\\"}}\"" }}
@@ -38,7 +38,7 @@ provision:
           EOF
 
           elif [[ $mode == "client" ]]; then
-          cat << EOF > /etc/consul.d/consul.hcl
+          cat <<-EOF > /etc/consul.d/consul.hcl
             data_dir  = "/opt/consul/data"
             log_level  = "INFO"
             bind_addr = {{ "\"{{ GetInterfaceIP \\\"eth0\\\"}}\"" }}
@@ -84,7 +84,7 @@ provision:
 
           # Set the config files accordingly 
           if [[ $mode == "server" ]]; then
-          cat << EOF > /etc/nomad.d/nomad.hcl
+          cat <<-EOF > /etc/nomad.d/nomad.hcl
               data_dir  = "/opt/nomad/data"
               bind_addr = "0.0.0.0"
 
@@ -106,7 +106,7 @@ provision:
       EOF
 
           elif [[ $mode == "client" ]]; then
-          cat << EOF > /etc/nomad.d/nomad.hcl
+          cat <<-EOF > /etc/nomad.d/nomad.hcl
               data_dir  = "/opt/nomad/data"
               bind_addr = "0.0.0.0"
               datacenter = "$cluster"
