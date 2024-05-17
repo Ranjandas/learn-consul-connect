@@ -34,44 +34,68 @@ provision:
 
   - mode: system # configure Nomad
     script: |
-      cat <<-EOF | tee /etc/nomad.d/nomad.hcl
-      data_dir  = "/opt/nomad/data"
-      log_level  = "INFO"
-      bind_addr = "0.0.0.0"
+      function setConfig {
+          local mode=$1
+          local cluster=$2
 
-      server {
-        # license_path is required for Nomad Enterprise as of Nomad v1.1.1+
-        #license_path = "/etc/nomad.d/license.hclic"
-        enabled          = true
-        bootstrap_expect = 1
+          # Set the config files accordingly 
+          if [[ $mode == "server" ]]; then
+          cat << EOF > /tmp/nomad.hcl
+              data_dir  = "/opt/nomad/data"
+              bind_addr = "0.0.0.0"
 
-        server_join {
-          retry_join = ["localhost"]
-        }
-      }
+              server {
+              #license_path = "/etc/nomad.d/license.hclic"
+              enabled = true
+              bootstrap_expect = 1
 
-      client {
-        enabled = true
-        servers = ["localhost"]
-      }
-      
-      plugin "raw_exec" {
-        config {
-        enabled = true
-        }
-      }
+              server_join {
+                  retry_join = ["$cluster-srv01"]
+              }
+              }
+              datacenter = "$cluster"
 
+              client {
+              enabled = true
+              servers = ["$cluster-srv01"]
+              }
       EOF
 
-      cat <<-EOF | tee /etc/sysctl.d/bridge.conf
-      net.bridge.bridge-nf-call-arptables = 1
-      net.bridge.bridge-nf-call-ip6tables = 1
-      net.bridge.bridge-nf-call-iptables = 1
-      EOF
+          elif [[ $mode == "client" ]]; then
+          cat << EOF > /tmp/nomad.hcl
+              data_dir  = "/opt/nomad/data"
+              bind_addr = "0.0.0.0"
+              datacenter = "$cluster"
 
-      # link the CNI directory
-      mkdir /opt/cni
-      ln -s /usr/libexec/cni/ /opt/cni/bin
+              client {
+              enabled = true
+              servers = ["$cluster-srv01"]
+              }
+      EOF
+          else
+              echo "Invalid mode for setConfig"
+          fi
+    }
+
+      # Set the variable
+      MODE="server"
+      CLUSTER="world"
+
+      # Check if the environment variable 'MODE' is set
+      if [[ -n $MODE ]]; then
+          echo "MODE is set to: $MODE"
+      else
+          echo "MODE is not set."
+      fi
+
+      # Check if the environment variable 'CLUSTER' is set
+      if [[ -n $CLUSTER ]]; then
+          echo "CLUSTER is set to: $CLUSTER"
+      else
+          echo "CLUSTER is not set."
+      fi
+
+      setConfig $MODE $CLUSTER
   - mode:
     script: |
       systemctl enable --now docker
