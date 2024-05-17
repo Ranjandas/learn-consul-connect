@@ -29,8 +29,12 @@ The following steps should be done before trying to run the scenarios.
     packer build -var-file variables.pkrvars.hcl hashibox.pkr.hcl
     ```
 
-3. Once the above two steps are done, you can go to specific scenario directory and run the makefile. The makefiles commonly supports the following targets:
-    
+3. Once the above two steps are done, you can go to specific scenario directory and run the makefile. 
+    ```
+    make create consul=1.18.1 nomad=1.7.7
+    ```
+The makefiles commonly supports the following targets:
+
     * `create`: This creates and starts lima VM[s]
     * `start`: This starts the VM[s]
     * `stop`: This stops the VM[s]

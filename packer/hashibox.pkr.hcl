@@ -45,7 +45,7 @@ source "qemu" "hashibox" {
   disk_image       = true
 
   format = "qcow2"
-
+  vm_name = "c-${var.consul_version}-n-${var.nomad_version}.qcow2"
   boot_command = []
   net_device   = "virtio-net"
 
@@ -88,6 +88,7 @@ build {
     ]
     inline = [
       "sudo dnf clean all",
+      "sudo dnf install -y unzip wget", 
       "sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo",
       "sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
 
