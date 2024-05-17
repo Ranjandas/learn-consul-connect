@@ -17,40 +17,40 @@ provision:
 
           # Set the config files accordingly 
           if [[ $mode == "server" ]]; then
-          cat <<-EOF > /etc/consul.d/consul.hcl
-            data_dir  = "/opt/consul/data"
-            log_level  = "INFO"
-            bind_addr = {{ "\"{{ GetInterfaceIP \\\"eth0\\\"}}\"" }}
-            client_addr = "0.0.0.0"
-            retry_join = ["$cluster-srv01"]
-            datacenter = "$cluster"
+      cat <<-EOF > /etc/consul.d/consul.hcl
+        data_dir  = "/opt/consul/data"
+        log_level  = "INFO"
+        bind_addr = {{ "\"{{ GetInterfaceIP \\\"eth0\\\"}}\"" }}
+        client_addr = "0.0.0.0"
+        retry_join = ["$cluster-srv01"]
+        datacenter = "$cluster"
 
-            ui_config {
-              enabled = true
-            }
+        ui_config {
+          enabled = true
+        }
 
-            connect {
-              enabled = true
-            }
+        connect {
+          enabled = true
+        }
 
-            server = true
-            bootstrap_expect = 1
-          EOF
+        server = true
+        bootstrap_expect = 1
+      EOF
 
           elif [[ $mode == "client" ]]; then
-          cat <<-EOF > /etc/consul.d/consul.hcl
-            data_dir  = "/opt/consul/data"
-            log_level  = "INFO"
-            bind_addr = {{ "\"{{ GetInterfaceIP \\\"eth0\\\"}}\"" }}
-            client_addr = "0.0.0.0"
-            retry_join = ["$cluster-srv01"]
-            datacenter = "$cluster"
+      cat <<-EOF > /etc/consul.d/consul.hcl
+        data_dir  = "/opt/consul/data"
+        log_level  = "INFO"
+        bind_addr = {{ "\"{{ GetInterfaceIP \\\"eth0\\\"}}\"" }}
+        client_addr = "0.0.0.0"
+        retry_join = ["$cluster-srv01"]
+        datacenter = "$cluster"
 
-            connect {
-              enabled = true
-            }
-            server = false
-          EOF
+        connect {
+          enabled = true
+        }
+        server = false
+      EOF
           else
             echo "Invalid mode for setConfig"
           fi
@@ -84,37 +84,37 @@ provision:
 
           # Set the config files accordingly 
           if [[ $mode == "server" ]]; then
-          cat <<-EOF > /etc/nomad.d/nomad.hcl
-              data_dir  = "/opt/nomad/data"
-              bind_addr = "0.0.0.0"
+      cat <<-EOF > /etc/nomad.d/nomad.hcl
+          data_dir  = "/opt/nomad/data"
+          bind_addr = "0.0.0.0"
 
-              server {
-              #license_path = "/etc/nomad.d/license.hclic"
-              enabled = true
-              bootstrap_expect = 1
+          server {
+          #license_path = "/etc/nomad.d/license.hclic"
+          enabled = true
+          bootstrap_expect = 1
 
-              server_join {
-                  retry_join = ["$cluster-srv01"]
-              }
-              }
-              datacenter = "$cluster"
+          server_join {
+              retry_join = ["$cluster-srv01"]
+          }
+          }
+          datacenter = "$cluster"
 
-              client {
-              enabled = true
-              servers = ["$cluster-srv01"]
-              }
+          client {
+          enabled = true
+          servers = ["$cluster-srv01"]
+          }
       EOF
 
           elif [[ $mode == "client" ]]; then
-          cat <<-EOF > /etc/nomad.d/nomad.hcl
-              data_dir  = "/opt/nomad/data"
-              bind_addr = "0.0.0.0"
-              datacenter = "$cluster"
+      cat <<-EOF > /etc/nomad.d/nomad.hcl
+          data_dir  = "/opt/nomad/data"
+          bind_addr = "0.0.0.0"
+          datacenter = "$cluster"
 
-              client {
-              enabled = true
-              servers = ["$cluster-srv01"]
-              }
+          client {
+          enabled = true
+          servers = ["$cluster-srv01"]
+          }
       EOF
           else
               echo "Invalid mode for setConfig"
