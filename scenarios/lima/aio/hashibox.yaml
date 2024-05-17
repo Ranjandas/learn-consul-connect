@@ -10,14 +10,21 @@ containerd:
 provision:
   - mode: system # configure Consul
     script: |
-      #!/bin/sh
-      cat <<-EOF | tee /etc/consul.d/consul.hcl
+#!/bin/bash
+
+function setConfig {
+    local mode=$1
+    local cluster=$2
+
+    # Set the config files accordingly 
+    if [[ $mode == "server" ]]; then
+    cat << EOF > /etc/consul.d/consul.hcl
       data_dir  = "/opt/consul/data"
       log_level  = "INFO"
-      bind_addr = {{ "\"{{ GetInterfaceIP \\\"eth0\\\"}}\"" }}
+      bind_addr = "{{ GetInterfaceIP \"eth0\"}}"
       client_addr = "0.0.0.0"
-      retry_join = ["localhost"]
-      
+      retry_join = ["$cluster-srv01"]
+      datacenter = "$cluster"
 
       ui_config {
         enabled = true
@@ -29,8 +36,45 @@ provision:
 
       server = true
       bootstrap_expect = 1
+    EOF
 
-      EOF
+    elif [[ $mode == "client" ]]; then
+    cat << EOF > /etc/consul.d/consul.hcl
+      data_dir  = "/opt/consul/data"
+      log_level  = "INFO"
+      bind_addr = "{{ GetInterfaceIP \"eth0\"}}"
+      client_addr = "0.0.0.0"
+      retry_join = ["$cluster-srv01"]
+      datacenter = "$cluster"
+
+      connect {
+        enabled = true
+      }
+      server = false
+    EOF
+    else
+      echo "Invalid mode for setConfig"
+    fi
+  }
+    # Set the variable
+    MODE="client"
+    CLUSTER="world"
+
+    # Check if the environment variable 'MODE' is set
+    if [[ -n $MODE ]]; then
+        echo "MODE is set to: $MODE"
+    else
+        echo "MODE is not set."
+    fi
+
+    # Check if the environment variable 'CLUSTER' is set
+    if [[ -n $CLUSTER ]]; then
+        echo "CLUSTER is set to: $CLUSTER"
+    else
+        echo "CLUSTER is not set."
+    fi
+
+    setConfig $MODE $CLUSTER
 
   - mode: system # configure Nomad
     script: |
@@ -40,7 +84,7 @@ provision:
 
           # Set the config files accordingly 
           if [[ $mode == "server" ]]; then
-          cat << EOF > /tmp/nomad.hcl
+          cat << EOF > /etc/nomad.d/nomad.hcl
               data_dir  = "/opt/nomad/data"
               bind_addr = "0.0.0.0"
 
@@ -62,7 +106,7 @@ provision:
       EOF
 
           elif [[ $mode == "client" ]]; then
-          cat << EOF > /tmp/nomad.hcl
+          cat << EOF > /etc/nomad.d/nomad.hcl
               data_dir  = "/opt/nomad/data"
               bind_addr = "0.0.0.0"
               datacenter = "$cluster"
